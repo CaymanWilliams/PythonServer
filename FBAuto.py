@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 
+#model class for a facebook item
 class FBItem:
     def __init__(self, name, price, cat, condition, location, description, photos):
         self.name = name
@@ -18,6 +19,7 @@ class FBItem:
         self.description = description
         self.photos = photos
 
+#initializes the selenium driver
 def initializeDriver():
     #dc = webdriver.DesiredCapabilities.HTMLUNIT
 
@@ -38,6 +40,7 @@ def initializeDriver():
     driver = webdriver.Chrome(options = option, executable_path = "./env/chromedriver.exe")
     wait = WebDriverWait(driver, 10)
 
+#defines a clicking function (more robust than a simple click)
 def clickWait(element):
     error = True
     t_end = time.time() + 10
@@ -51,6 +54,7 @@ def clickWait(element):
     if error == True:
         raise Exception
 
+#Logs into facebook using the specified details
 def FacebookLogin(user, passkey):
     driver.get("https://facebook.com/marketplace")
     username = driver.find_element_by_id("email")
@@ -63,13 +67,15 @@ def FacebookLogin(user, passkey):
     login.click()
     wait.until(EC.staleness_of(login))
 
+#navigates to the marketplace tab
 def marketplaceNav():
     sellSomething = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(),'Sell Something')]")))
     sellSomething.click()
 
-def itemPost(toSell):
+#posts an item
+def itemPost(toSell, user, passkey):
     initializeDriver()
-    FacebookLogin("caymanwilliams@live.com", "K-M@n1123")
+    FacebookLogin(user, passkey)
     marketplaceNav()
 
     # 1) What are you selling? 2) Price 3) Category (Dropdown) 3.5) Condition 4) Location 5) Description 6) Photos(10) 7) Select Groups
@@ -111,9 +117,10 @@ def itemPost(toSell):
 
     driver.close()
 
+#posts a vehicle
 def vehiclePost():
     initializeDriver()
-    FacebookLogin("caymanwilliams@live.com", "K-M@n1123")
+    FacebookLogin()
     marketplaceNav()
     
     # 1) Vehicle type (dropdown) 2) Year (dropdown) 3) Make (dropdown?) 4) Model (dropdown?) 5) Price 6) Location 7) Description 8) Photos(20) ...
@@ -121,6 +128,7 @@ def vehiclePost():
     vehicleForSale.click()
     wait.until(EC.staleness_of(vehicleForSale))
 
+#posts a real estate property
 def homePost():
     # 1) Sale/Rent? 2) Apartment/House/Room/Townhouse 3) Beds 4) Bath 5) Address (private?) 6) Description Optional: Square Feet, Laundry, Parking, Air Conditioning, Heating type
     homeForSell = wait.until(EC.element_to_be_clickable((By.XPATH, "//*[contains(text(),'Home for Sale or Rent')]")))

@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 
+#driver initialization
 def initializeDriver():
     #dc = webdriver.DesiredCapabilities.HTMLUNIT
 
@@ -28,6 +29,7 @@ def initializeDriver():
     driver = webdriver.Chrome(options = option, executable_path = "./env/chromedriver.exe")
     wait = WebDriverWait(driver, 10)
 
+#logs into offerup
 def offerUpLogin(user, passkey):
     driver.get("https://offerup.com")
     login = driver.find_element_by_id("db-desktop-login")
@@ -40,7 +42,3 @@ def offerUpLogin(user, passkey):
     password.send_keys(passkey)
     login = driver.find_element_by_id("db-submit-btn")
     login.click()
-
-if __name__ == "__main__":
-    initializeDriver()
-    offerUpLogin("caymanwilliams@live.com", "Cw129662")
